@@ -1,14 +1,6 @@
 import { useState } from 'react'
-
-function ColumnTitle({ allowRenameColumn, onClick, children: title }) {
-  return allowRenameColumn ? (
-    <span style={{ cursor: 'pointer' }} onClick={onClick}>
-      {title}
-    </span>
-  ) : (
-    <span>{title}</span>
-  )
-}
+import PencilIcon from '../SvgIcon/PencilIcon'
+import TrashIcon from '../SvgIcon/TrashIcon'
 
 function useRenameMode(state) {
   const [renameMode, setRenameMode] = useState(state)
@@ -52,18 +44,32 @@ export default function ({ children: column, allowRemoveColumn, onColumnRemove, 
             <button className='react-kanban-column-header__button' type='submit'>
               Rename
             </button>
-            <button className='react-kanban-column-header__button' type='button' onClick={handleRenameMode}>
+            <button
+              className='react-kanban-column-header__button button-cancel'
+              type='button'
+              onClick={handleRenameMode}
+            >
               Cancel
             </button>
           </span>
         </form>
       ) : (
-        <>
-          <ColumnTitle allowRenameColumn={allowRenameColumn} onClick={handleRenameMode}>
-            {column.title}
-          </ColumnTitle>
-          {allowRemoveColumn && <span onClick={() => onColumnRemove(column)}>×</span>}
-        </>
+        <div className='flex flex-row justify-between'>
+          <span>{column.title}</span>
+          <div className='flex flex-row w-20p'>
+            {allowRemoveColumn && (
+              <div onClick={() => onColumnRemove(column)} className='w-2r'>
+                <TrashIcon />
+              </div>
+            )}
+
+            {allowRemoveColumn && (
+              <div onClick={handleRenameMode} className='w-2r'>
+                <PencilIcon />
+              </div>
+            )}
+          </div>
+        </div>
       )}
     </div>
   )

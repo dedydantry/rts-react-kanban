@@ -45,6 +45,7 @@ function UncontrolledBoard({
   allowAddCard,
   onNewCardConfirm,
   onCardDetail,
+  CardComponent,
 }) {
   const [board, setBoard] = useState(initialBoard)
   const handleOnCardDragEnd = partialRight(handleOnDragEnd, { moveCallback: moveCard, notifyCallback: onCardDragEnd })
@@ -67,9 +68,11 @@ function UncontrolledBoard({
   }
 
   function handleColumnRemove(column) {
-    const filteredBoard = removeColumn(board, column)
-    onColumnRemove(filteredBoard, column)
-    setBoard(filteredBoard)
+    if (confirm('Delete this column?')) {
+      const filteredBoard = removeColumn(board, column)
+      onColumnRemove(filteredBoard, column)
+      setBoard(filteredBoard)
+    }
   }
 
   function handleColumnRename(column, title) {
@@ -95,13 +98,15 @@ function UncontrolledBoard({
   }
 
   function handleCardRemove(column, card) {
-    const boardWithoutCard = removeCard(board, column, card)
-    onCardRemove(
-      boardWithoutCard,
-      boardWithoutCard.columns.find(({ id }) => id === column.id),
-      card
-    )
-    setBoard(boardWithoutCard)
+    if (confirm('Delete this card?')) {
+      const boardWithoutCard = removeCard(board, column, card)
+      onCardRemove(
+        boardWithoutCard,
+        boardWithoutCard.columns.find(({ id }) => id === column.id),
+        card
+      )
+      setBoard(boardWithoutCard)
+    }
   }
 
   function handleCardDetail(column, card) {
@@ -128,6 +133,18 @@ function UncontrolledBoard({
       })}
       renderCard={(column, card, dragging) => {
         if (renderCard) return renderCard(card, { removeCard: handleCardRemove.bind(null, column, card), dragging })
+        if (CardComponent) {
+          return (
+            <CardComponent
+              dragging={dragging}
+              allowRemoveCard={allowRemoveCard}
+              onCardRemove={(card) => handleCardRemove(column, card)}
+              onCardDetail={(card) => handleCardDetail(column, card)}
+            >
+              {card}
+            </CardComponent>
+          )
+        }
         return (
           <DefaultCard
             dragging={dragging}

@@ -1,6 +1,6 @@
 {
   "name": "rts-react-kanban",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Yet another Kanban/Trello board lib for React.",
   "main": "dist/index.js",
   "files": [
@@ -77,6 +77,8 @@
     "dev": "cross-env NODE_ENV=cypress start-test server 8080 'cypress open'"
   },
   "dependencies": {
-    "react-beautiful-dnd": "^13.0.0"
+    "add": "^2.0.6",
+    "react-beautiful-dnd": "^13.0.0",
+    "yarn": "^1.22.19"
   }
 }

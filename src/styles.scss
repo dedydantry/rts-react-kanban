@@ -117,6 +117,8 @@
   font-weight: bold;
 
   input {
+  font-weight: normal;
+
     &:focus {
       outline: none;
     }
@@ -124,14 +126,21 @@
 }
 
 .react-kanban-column-header__button {
-  color: #333333;
-  background-color: #ffffff;
-  border-color: #cccccc;
+  background-color: #059669!important; /* Green */
+  border: none;
+  color: #fff;
+  padding: 3px 3px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 9px;
+  margin: 4px 2px;
+  font-weight: normal;
+  cursor: pointer;
+  border-radius: 5px;
 
-  &:hover,
-  &:focus,
-  &:active {
-    background-color: #e6e6e6;
+  &.button-cancel{
+    background-color: #DC2626!important;
   }
 }
 
@@ -186,6 +195,10 @@
   flex-direction: row;
 }
 
+.justify-between{
+  justify-content:space-between;
+}
+
 .items-center{
   align-items: center;
 }
@@ -202,8 +215,16 @@
   background-color: white;
 }
 
-.w-2{
-  width: 2rem;
+.w{
+  &-1r{
+    width: 1rem;
+  }
+  &-2r{
+    width: 2rem;
+  }
+  &-20p{
+    width: 20%;
+  }
 }
 
 .text{

@@ -2,8 +2,11 @@ import { render } from 'react-dom'
 import Board from '../src'
 import getUrlParams from './services/getUrlParams'
 import '../src/styles.scss'
+import CardTemplate from './CardTemplate'
+import PopupDetail from './PopupDetail'
+import { useState } from 'react'
 
-const board = {
+const initialBoard = {
   columns: [
     {
       id: '0206c8d7-4d48-4d97-b867-86fc2d21074d',
@@ -101,23 +104,77 @@ const board = {
   ],
 }
 
-render(
-  <Board
-    {...getUrlParams()}
-    allowRemoveLane
-    allowRenameColumn
-    allowRemoveCard
-    onLaneRemove={console.log}
-    onCardRemove={console.log}
-    onLaneRename={console.log}
-    onCardDetail={(a, b) => console.log(a, b, 'croot')}
-    initialBoard={board}
-    allowAddCard={{ on: 'bottom' }}
-    onNewCardConfirm={(draftCard) => ({
-      id: new Date().getTime(),
-      ...draftCard,
-    })}
-    onCardNew={console.log}
-  />,
-  document.getElementById('app')
-)
+function App() {
+  const [toggle, setTogglle] = useState(false)
+  const [board, setBoard] = useState(initialBoard)
+  const [card, setCard] = useState(null)
+  const [activeColumnIndex, setActiveColumnIndex] = useState(null)
+  const [activeCardIndex, setActiveCardIndex] = useState(null)
+
+  const initIndex = (a, b) => {
+    const findIndexColumn = board.columns.findIndex((x) => x.id === a.id)
+    setActiveColumnIndex(findIndexColumn)
+    let findIndexCard = null
+    if (b) {
+      findIndexCard = board.columns[findIndexColumn].cards.findIndex((x) => x.id === b.id)
+      setActiveCardIndex(findIndexCard)
+    }
+    return {
+      indexCloum: findIndexColumn,
+      indexCard: findIndexCard,
+    }
+  }
+  const onDetail = (a, b) => {
+    initIndex(a, b)
+    setCard({ ...b })
+    setTogglle(true)
+  }
+
+  const submitEdit = ({ comment }) => {
+    const c = board
+    c.columns[activeColumnIndex].cards[activeCardIndex].title = comment
+    setBoard({ ...c })
+    setTogglle(false)
+  }
+
+  const onCardNew = (a, b, c) => {
+    const { indexCloum } = initIndex(b)
+    const all = board
+    all.columns[indexCloum].cards.push(c)
+    setBoard(all)
+  }
+
+  const onRenameColumn = (a, b) => {
+    console.log(a, 'a')
+    console.log(b, 'b')
+  }
+  return (
+    <>
+      <Board
+        {...getUrlParams()}
+        allowRemoveLane
+        allowRenameColumn
+        allowRemoveCard
+        onColumnRename={onRenameColumn}
+        allowRemoveColumn
+        onColumnRemove={console.log}
+        onLaneRemove={console.log}
+        onCardRemove={console.log}
+        onLaneRename={console.log}
+        onCardDetail={onDetail}
+        initialBoard={board}
+        allowAddCard={{ on: 'bottom' }}
+        onNewCardConfirm={(draftCard) => ({
+          id: new Date().getTime(),
+          ...draftCard,
+        })}
+        onCardNew={onCardNew}
+        CardComponent={CardTemplate}
+      />
+
+      {toggle ? <PopupDetail card={card} onSubmit={submitEdit} /> : <></>}
+    </>
+  )
+}
+
+render(<App />, document.getElementById('app'))

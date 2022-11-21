@@ -7,11 +7,16 @@ export default function ({ children: card, dragging, allowRemoveCard, onCardRemo
             <span>{card.title}</span>
           </div>
         </span>
-        <div className='react-kanban-card__description text-sm'>{card.owner}</div>
-        <div className='kanban-card-status'>
-          <img src={card.avatar} />
-          <span>{card.label}</span>
-        </div>
+        {card.owner ? <div className='react-kanban-card__description text-sm'>{card.owner}</div> : <></>}
+
+        {card.avatar || card.label ? (
+          <div className='kanban-card-status'>
+            <img src={card.avatar} />
+            <span>{card.label}</span>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
       {allowRemoveCard && (
         <div className='card-action w-2'>
