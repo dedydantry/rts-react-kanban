@@ -44,6 +44,7 @@ function UncontrolledBoard({
   disableColumnDrag,
   allowAddCard,
   onNewCardConfirm,
+  onCardDetail,
 }) {
   const [board, setBoard] = useState(initialBoard)
   const handleOnCardDragEnd = partialRight(handleOnDragEnd, { moveCallback: moveCard, notifyCallback: onCardDragEnd })
@@ -103,6 +104,10 @@ function UncontrolledBoard({
     setBoard(boardWithoutCard)
   }
 
+  function handleCardDetail(column, card) {
+    onCardDetail(column, card)
+  }
+
   return (
     <BoardContainer
       onCardDragEnd={handleOnCardDragEnd}
@@ -128,6 +133,7 @@ function UncontrolledBoard({
             dragging={dragging}
             allowRemoveCard={allowRemoveCard}
             onCardRemove={(card) => handleCardRemove(column, card)}
+            onCardDetail={(card) => handleCardDetail(column, card)}
           >
             {card}
           </DefaultCard>
