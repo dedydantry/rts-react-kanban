@@ -148,16 +148,39 @@ function App() {
     console.log(a, 'a')
     console.log(b, 'b')
   }
+
+  const onAddColumn = () => {
+    const b = board
+    b.columns.push({
+      id: new Date().getTime(),
+      title: 'Masnn ' + new Date().getTime(),
+      cards: [],
+    })
+    setBoard({ ...b })
+  }
+
+  const onColumnRemove = (a, b) => {
+    const arr = board
+    const findIndex = arr.columns.findIndex((x) => x.id === b.id)
+    arr.columns.splice(findIndex, 1)
+
+    setBoard({ ...arr })
+  }
   return (
     <>
+      <div>
+        <button onClick={onAddColumn}>Add column</button>
+      </div>
       <Board
         {...getUrlParams()}
+        allowAddColumn
         allowRemoveLane
         allowRenameColumn
         allowRemoveCard
         onColumnRename={onRenameColumn}
         allowRemoveColumn
-        onColumnRemove={console.log}
+        onColumnRemove={onColumnRemove}
+        onCardDragEnd={console.log}
         onLaneRemove={console.log}
         onCardRemove={console.log}
         onLaneRename={console.log}
@@ -168,8 +191,8 @@ function App() {
           id: new Date().getTime(),
           ...draftCard,
         })}
+        CardTemplate={CardTemplate}
         onCardNew={onCardNew}
-        CardComponent={CardTemplate}
       />
 
       {toggle ? <PopupDetail card={card} onSubmit={submitEdit} /> : <></>}

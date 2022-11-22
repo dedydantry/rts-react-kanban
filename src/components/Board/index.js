@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 import { DragDropContext } from 'react-beautiful-dnd'
 import Column from './components/Column'
 import ColumnAdder from './components/ColumnAdder'
@@ -48,6 +48,11 @@ function UncontrolledBoard({
   CardComponent,
 }) {
   const [board, setBoard] = useState(initialBoard)
+
+  useEffect(() => {
+    setBoard({ ...initialBoard })
+  }, [initialBoard])
+
   const handleOnCardDragEnd = partialRight(handleOnDragEnd, { moveCallback: moveCard, notifyCallback: onCardDragEnd })
   const handleOnColumnDragEnd = partialRight(handleOnDragEnd, {
     moveCallback: moveColumn,
@@ -136,6 +141,7 @@ function UncontrolledBoard({
         if (CardComponent) {
           return (
             <CardComponent
+              key={card.id}
               dragging={dragging}
               allowRemoveCard={allowRemoveCard}
               onCardRemove={(card) => handleCardRemove(column, card)}
@@ -147,6 +153,7 @@ function UncontrolledBoard({
         }
         return (
           <DefaultCard
+            key={card.id}
             dragging={dragging}
             allowRemoveCard={allowRemoveCard}
             onCardRemove={(card) => handleCardRemove(column, card)}

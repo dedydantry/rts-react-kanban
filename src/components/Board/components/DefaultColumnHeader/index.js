@@ -32,15 +32,15 @@ export default function ({ children: column, allowRemoveColumn, onColumnRemove, 
     <div className='react-kanban-column-header'>
       {renameMode ? (
         <form onSubmit={handleRenameColumn}>
-          <span>
+          <div>
             <input
               type='text'
               value={titleInput}
               onChange={({ target: { value } }) => setTitleInput(value)}
               autoFocus
             />
-          </span>
-          <span>
+          </div>
+          <div className='mt-1'>
             <button className='react-kanban-column-header__button' type='submit'>
               Rename
             </button>
@@ -51,7 +51,7 @@ export default function ({ children: column, allowRemoveColumn, onColumnRemove, 
             >
               Cancel
             </button>
-          </span>
+          </div>
         </form>
       ) : (
         <div className='flex flex-row justify-between'>

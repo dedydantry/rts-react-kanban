@@ -40,6 +40,8 @@
   border-radius: 2px;
   background-color: #eee;
   margin: 5px;
+  min-height: 100vh;
+  overflow-y: scroll;
   input {
     &:focus {
       outline: none;
@@ -67,10 +69,12 @@
   cursor: pointer;
   border: 1px solid #ccc;
   transition: 0.3s;
-  border-radius: 3px;
-  font-size: 20px;
+  border-radius: 5px;
+  font-size: 12px;
   margin-bottom: 10px;
-  font-weight: bold;
+  padding: 0.8rem;
+  text-align: center;
+  color: #6B7280;
   &:hover {
     background-color: #ccc;
   }
@@ -117,8 +121,10 @@
   font-weight: bold;
 
   input {
-  font-weight: normal;
-
+    width: 100%;
+    font-weight: normal;
+    border:0.8px solid #D6D3D1;
+    border-radius: 5px;
     &:focus {
       outline: none;
     }
