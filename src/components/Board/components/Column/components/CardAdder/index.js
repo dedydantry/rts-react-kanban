@@ -15,7 +15,7 @@ export default function CardAdder({ column, onConfirm }) {
         <CardForm onConfirm={confirmCard} onCancel={() => setAddingCard(false)} />
       ) : (
         <button className='react-kanban-card-adder-button' onClick={() => setAddingCard(!addingCard)}>
-          + Add new to-do
+          +
         </button>
       )}
     </>

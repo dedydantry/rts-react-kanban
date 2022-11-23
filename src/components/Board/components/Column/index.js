@@ -45,7 +45,7 @@ function Column({
               {children.cards.length ? (
                 children.cards.map((card, index) => (
                   <Card
-                    key={index}
+                    key={card.id}
                     index={index}
                     renderCard={(dragging) => renderCard(children, card, dragging)}
                     disableCardDrag={disableCardDrag}

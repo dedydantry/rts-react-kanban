@@ -3,12 +3,10 @@ import { when } from '@services/utils'
 
 function CardForm({ onConfirm, onCancel }) {
   const inputCardTitle = useRef()
-  const inputCardDescription = ''
-
   function addCard(event) {
     event.preventDefault()
     when(inputCardTitle.current.value)((value) => {
-      onConfirm({ title: value, description: inputCardDescription })
+      onConfirm({ title: value })
     })
   }
 
@@ -16,14 +14,12 @@ function CardForm({ onConfirm, onCancel }) {
     <div className='react-kanban-card-adder-form'>
       <form onSubmit={addCard}>
         <input
-          className='react-kanban-card-adder-form__description'
+          className='react-kanban-card-adder-form__title'
           name='title'
           autoFocus
-          defaultValue=''
+          placeholder='Write something'
           ref={inputCardTitle}
-          placeholder='Write sometext'
         />
-
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '5px' }}>
           <button className='react-kanban-card-adder-form__button' type='submit'>
             Add

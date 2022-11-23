@@ -20,73 +20,7 @@ const Columns = forwardRef((props, ref) => <div ref={ref} style={{ whiteSpace: '
 const DroppableBoard = withDroppable(Columns)
 
 function Board(props) {
-  return props.initialBoard ? <UncontrolledBoard {...props} /> : <ControlledBoard {...props} />
-}
-
-function ControlledBoard({
-  children: board,
-  onCardDragEnd,
-  onColumnDragEnd,
-  allowAddColumn,
-  renderColumnAdder,
-  onNewColumnConfirm,
-  onColumnRemove,
-  renderColumnHeader,
-  allowRemoveColumn,
-  allowRenameColumn,
-  onColumnRename,
-  renderCard,
-  allowRemoveCard,
-  onCardRemove,
-  disableCardDrag,
-  disableColumnDrag,
-  allowAddCard,
-  onNewCardConfirm,
-  onCardDetail,
-}) {
-  const handleOnCardDragEnd = partialRight(handleOnDragEnd, { notifyCallback: onCardDragEnd })
-  const handleOnColumnDragEnd = partialRight(handleOnDragEnd, { notifyCallback: onColumnDragEnd })
-
-  function handleOnDragEnd({ source, destination, subject }, { notifyCallback }) {
-    when(notifyCallback)((callback) => callback(subject, source, destination))
-  }
-
-  return (
-    <BoardContainer
-      onCardDragEnd={handleOnCardDragEnd}
-      onColumnDragEnd={handleOnColumnDragEnd}
-      renderColumnAdder={() => {
-        if (!allowAddColumn) return null
-        if (renderColumnAdder) return renderColumnAdder()
-        if (!onNewColumnConfirm) return null
-        return <ColumnAdder onConfirm={(title) => onNewColumnConfirm({ title, cards: [] })} />
-      }}
-      {...(renderColumnHeader && { renderColumnHeader: renderColumnHeader })}
-      renderCard={(_column, card, dragging) => {
-        if (renderCard) return renderCard(card, { dragging })
-        return (
-          <DefaultCard
-            dragging={dragging}
-            allowRemoveCard={allowRemoveCard}
-            onCardRemove={(card) => onCardRemove(_column, card)}
-            onCardDetail={onCardDetail}
-          >
-            {card}
-          </DefaultCard>
-        )
-      }}
-      allowRemoveColumn={allowRemoveColumn}
-      onColumnRemove={onColumnRemove}
-      allowRenameColumn={allowRenameColumn}
-      onColumnRename={onColumnRename}
-      disableColumnDrag={disableColumnDrag}
-      disableCardDrag={disableCardDrag}
-      onCardNew={onNewCardConfirm}
-      allowAddCard={allowAddCard && onNewCardConfirm}
-    >
-      {board}
-    </BoardContainer>
-  )
+  return <UncontrolledBoard {...props} />
 }
 
 function UncontrolledBoard({

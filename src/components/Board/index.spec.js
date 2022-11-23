@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { render, within, act, fireEvent, screen } from '@testing-library/react'
-import Board from './'
+import Board from './index-un'
 import { callbacks } from 'react-beautiful-dnd'
 import { moveCard } from '@services/helpers'
 

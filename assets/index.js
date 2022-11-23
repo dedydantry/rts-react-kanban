@@ -1,12 +1,19 @@
-import { render } from 'react-dom'
-import Board from '../src'
-import getUrlParams from './services/getUrlParams'
-import '../src/styles.scss'
-import CardTemplate from './CardTemplate'
-import PopupDetail from './PopupDetail'
 import { useState } from 'react'
-
-const initialBoard = {
+import { render } from 'react-dom'
+import Board, {
+  addCard,
+  addColumn,
+  removeCard,
+  changeColumn,
+  moveCard,
+  moveColumn,
+  removeColumn,
+  filterCard,
+} from '../src'
+// import getUrlParams from './services/getUrlParams'
+import '../src/styles.scss'
+import ColumnHeader from './components/ColumnHeader'
+const initalBoard = {
   columns: [
     {
       id: '0206c8d7-4d48-4d97-b867-86fc2d21074d',
@@ -16,73 +23,41 @@ const initialBoard = {
           id: '0206c8d7-4d48-4d97-b867-86fc2d21075d',
           title: 'Card title 1',
           description: 'Card content',
-          label: 'COMPLETED',
-          owner: 'dedy@email.com',
-          avatar:
-            'https://bc3-production-assets-cdn.basecamp-static.com/4459958/people/BAhpBMqRvQE=--5459b292b5e520ca85d904cbff57bfb0d3102a2d/avatar?v=1',
         },
         {
           id: 2,
           title: 'Card title 2',
           description: 'Card content',
-          label: 'COMPLETED',
-          owner: 'dedy@email.com',
-          avatar:
-            'https://bc3-production-assets-cdn.basecamp-static.com/4459958/people/BAhpBMqRvQE=--5459b292b5e520ca85d904cbff57bfb0d3102a2d/avatar?v=1',
         },
         {
           id: 3,
-          title: 'Card title 3',
+          title: 'dedy dantry',
           description: 'Card content',
-          label: 'COMPLETED',
-          owner: 'dedy@email.com',
-          avatar:
-            'https://bc3-production-assets-cdn.basecamp-static.com/4459958/people/BAhpBMqRvQE=--5459b292b5e520ca85d904cbff57bfb0d3102a2d/avatar?v=1',
         },
         {
           id: 4,
           title: 'Card title 4',
           description: 'Card content',
-          label: 'COMPLETED',
-          owner: 'dedy@email.com',
-          avatar:
-            'https://bc3-production-assets-cdn.basecamp-static.com/4459958/people/BAhpBMqRvQE=--5459b292b5e520ca85d904cbff57bfb0d3102a2d/avatar?v=1',
         },
         {
           id: 5,
           title: 'Card title 5',
-          description: 'Create api trasaction, index,show,update, and delete',
-          label: 'COMPLETED',
-          owner: 'dedy@email.com',
-          avatar:
-            'https://bc3-production-assets-cdn.basecamp-static.com/4459958/people/BAhpBMqRvQE=--5459b292b5e520ca85d904cbff57bfb0d3102a2d/avatar?v=1',
+          description: 'Card content',
         },
         {
           id: 6,
           title: 'Card title 6',
           description: 'Card content',
-          label: 'COMPLETED',
-          owner: 'dedy@email.com',
-          avatar:
-            'https://bc3-production-assets-cdn.basecamp-static.com/4459958/people/BAhpBMqRvQE=--5459b292b5e520ca85d904cbff57bfb0d3102a2d/avatar?v=1',
         },
         {
           id: 7,
           title: 'Card title 7',
           description: 'Card content',
-          label: 'COMPLETED',
-          owner: 'dedy@email.com',
-          avatar:
-            'https://bc3-production-assets-cdn.basecamp-static.com/4459958/people/BAhpBMqRvQE=--5459b292b5e520ca85d904cbff57bfb0d3102a2d/avatar?v=1',
         },
         {
           id: 8,
           title: 'Card title 8',
           description: 'Card content',
-          label: 'COMPLETED',
-          owner: 'dedy@email.com',
-          avatar:
-            'https://bc3-production-assets-cdn.basecamp-static.com/4459958/people/BAhpBMqRvQE=--5459b292b5e520ca85d904cbff57bfb0d3102a2d/avatar?v=1',
         },
       ],
     },
@@ -92,12 +67,8 @@ const initialBoard = {
       cards: [
         {
           id: 9,
-          title: 'Create api trasaction, index,show,update, and delete',
-          description: 'dedydantry@gmail.com',
-          label: 'ON PROGRESS',
-          owner: 'dedy@email.com',
-          avatar:
-            'https://bc3-production-assets-cdn.basecamp-static.com/4459958/people/BAhpBMqRvQE=--5459b292b5e520ca85d904cbff57bfb0d3102a2d/avatar?v=1',
+          title: 'Card title 9',
+          description: 'Card content',
         },
       ],
     },
@@ -105,97 +76,95 @@ const initialBoard = {
 }
 
 function App() {
-  const [toggle, setTogglle] = useState(false)
-  const [board, setBoard] = useState(initialBoard)
-  const [card, setCard] = useState(null)
-  const [activeColumnIndex, setActiveColumnIndex] = useState(null)
-  const [activeCardIndex, setActiveCardIndex] = useState(null)
+  const [board, setBoard] = useState(initalBoard)
 
-  const initIndex = (a, b) => {
-    const findIndexColumn = board.columns.findIndex((x) => x.id === a.id)
-    setActiveColumnIndex(findIndexColumn)
-    let findIndexCard = null
-    if (b) {
-      findIndexCard = board.columns[findIndexColumn].cards.findIndex((x) => x.id === b.id)
-      setActiveCardIndex(findIndexCard)
-    }
-    return {
-      indexCloum: findIndexColumn,
-      indexCard: findIndexCard,
-    }
-  }
-  const onDetail = (a, b) => {
-    initIndex(a, b)
-    setCard({ ...b })
-    setTogglle(true)
-  }
-
-  const submitEdit = ({ comment }) => {
-    const c = board
-    c.columns[activeColumnIndex].cards[activeCardIndex].title = comment
-    setBoard({ ...c })
-    setTogglle(false)
-  }
-
-  const onCardNew = (a, b, c) => {
-    const { indexCloum } = initIndex(b)
-    const all = board
-    all.columns[indexCloum].cards.push(c)
-    setBoard(all)
-  }
-
-  const onRenameColumn = (a, b) => {
-    console.log(a, 'a')
-    console.log(b, 'b')
-  }
-
-  const onAddColumn = () => {
-    const b = board
-    b.columns.push({
+  function onAddColumn() {
+    const newBoard = addColumn(board, {
       id: new Date().getTime(),
-      title: 'Masnn ' + new Date().getTime(),
+      title: 'Column Backlog',
       cards: [],
     })
-    setBoard({ ...b })
+
+    setBoard(newBoard)
   }
 
-  const onColumnRemove = (a, b) => {
-    const arr = board
-    const findIndex = arr.columns.findIndex((x) => x.id === b.id)
-    arr.columns.splice(findIndex, 1)
+  const onNewColumnConfirm = (column) => {
+    const newBoard = addColumn(board, {
+      id: new Date().getTime(),
+      ...column,
+    })
 
-    setBoard({ ...arr })
+    setBoard(newBoard)
   }
+
+  const onColumnRename = (a, b) => {
+    const rename = changeColumn(board, a, { title: b })
+    setBoard(rename)
+  }
+
+  const onCardRemove = (a, b, c) => {
+    const remove = removeCard(board, a, b)
+    setBoard(remove)
+  }
+
+  const onFilter = () => {
+    const filtered = filterCard(board, 'title', 'dedy dantry')
+    setBoard(filtered)
+  }
+
+  const onNewCard = (a, b) => {
+    const add = addCard(board, a, b)
+    setBoard(add)
+  }
+
+  const onCardDragEnd = (a, b, c, d) => {
+    const movedCard = moveCard(board, b, c)
+    setBoard(movedCard)
+  }
+
+  const onColumnDragEnd = (column, from, to) => {
+    const movedColumn = moveColumn(board, from, to)
+    setBoard(movedColumn)
+  }
+
+  const onColumnRemove = (column) => {
+    const removed = removeColumn(board, column)
+    setBoard(removed)
+  }
+
+  const onCardDetail = (card) => {
+    console.log(card)
+  }
+
+  const headerCol = (props) => {
+    return <ColumnHeader {...props} />
+  }
+
   return (
     <>
-      <div>
-        <button onClick={onAddColumn}>Add column</button>
+      <div className=''>
+        <button onClick={onAddColumn}>Add Column</button>
+        <button onClick={onFilter}>Filters</button>
+        <button>Add Card</button>
       </div>
       <Board
-        {...getUrlParams()}
-        allowAddColumn
-        allowRemoveLane
-        allowRenameColumn
-        allowRemoveCard
-        onColumnRename={onRenameColumn}
-        allowRemoveColumn
-        onColumnRemove={onColumnRemove}
-        onCardDragEnd={console.log}
-        onLaneRemove={console.log}
-        onCardRemove={console.log}
-        onLaneRename={console.log}
-        onCardDetail={onDetail}
-        initialBoard={board}
         allowAddCard={{ on: 'bottom' }}
-        onNewCardConfirm={(draftCard) => ({
-          id: new Date().getTime(),
-          ...draftCard,
-        })}
-        CardTemplate={CardTemplate}
-        onCardNew={onCardNew}
-      />
-
-      {toggle ? <PopupDetail card={card} onSubmit={submitEdit} /> : <></>}
+        allowAddColumn
+        allowRemoveCard
+        allowRemoveColumn
+        allowRenameColumn
+        onNewColumnConfirm={onNewColumnConfirm}
+        onNewCardConfirm={onNewCard}
+        onCardRemove={onCardRemove}
+        onColumnRename={onColumnRename}
+        onColumnRemove={onColumnRemove}
+        onCardDragEnd={onCardDragEnd}
+        onColumnDragEnd={onColumnDragEnd}
+        onCardDetail={onCardDetail}
+        renderColumnHeader={headerCol}
+      >
+        {board}
+      </Board>
     </>
   )
 }

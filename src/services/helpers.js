@@ -88,4 +88,13 @@ function changeCard(board, cardId, newCard) {
   return { ...board, columns: board.columns.map((column) => ({ ...column, cards: changedCards(column.cards) })) }
 }
 
-export { moveColumn, moveCard, addColumn, removeColumn, changeColumn, addCard, removeCard, changeCard }
+function filterCard(board, keyword, value) {
+  const columns = board.columns
+  columns.map((x) => {
+    x.cards = x.cards.filter((y) => y[keyword] === value)
+    return x
+  })
+  return { ...board, columns: columns }
+}
+
+export { moveColumn, moveCard, addColumn, removeColumn, changeColumn, addCard, removeCard, changeCard, filterCard }

@@ -2,6 +2,7 @@ import { createRef } from 'react'
 import { when } from '@services/utils'
 
 function ColumnForm({ onConfirm, onCancel }) {
+  // FIXME use hook
   const inputColumnTitle = createRef()
 
   function addColumn(event) {
