@@ -9,6 +9,7 @@ import Board, {
   moveColumn,
   removeColumn,
   filterCard,
+  filterCardDeep,
 } from '../src'
 // import getUrlParams from './services/getUrlParams'
 import '../src/styles.scss'
@@ -21,43 +22,86 @@ const initalBoard = {
       cards: [
         {
           id: '0206c8d7-4d48-4d97-b867-86fc2d21075d',
-          title: 'Card title 1',
+          title: 'Dedy title 1',
           description: 'Card content',
+          members: [
+            {
+              name: 'jokowi',
+            },
+            {
+              name: 'prabowo',
+            },
+          ],
         },
         {
           id: 2,
-          title: 'Card title 2',
+          title: 'Joko title 2',
           description: 'Card content',
+          members: [
+            {
+              name: 'jokowi',
+            },
+          ],
         },
         {
           id: 3,
-          title: 'dedy dantry',
+          title: 'wowo dantry',
           description: 'Card content',
+          members: [
+            {
+              name: 'jokowi',
+            },
+          ],
         },
         {
           id: 4,
-          title: 'Card title 4',
+          title: 'kadrun title 4',
           description: 'Card content',
+          members: [
+            {
+              name: 'jokowi',
+            },
+          ],
         },
         {
           id: 5,
           title: 'Card title 5',
           description: 'Card content',
+          members: [
+            {
+              name: 'jokowi',
+            },
+          ],
         },
         {
           id: 6,
           title: 'Card title 6',
           description: 'Card content',
+          members: [
+            {
+              name: 'jokowi',
+            },
+          ],
         },
         {
           id: 7,
-          title: 'Card title 7',
+          title: 'Card title probocor',
           description: 'Card content',
+          members: [
+            {
+              name: 'prabowo',
+            },
+          ],
         },
         {
           id: 8,
           title: 'Card title 8',
           description: 'Card content',
+          members: [
+            {
+              name: 'jokowi',
+            },
+          ],
         },
       ],
     },
@@ -69,6 +113,14 @@ const initalBoard = {
           id: 9,
           title: 'Card title 9',
           description: 'Card content',
+          members: [
+            {
+              name: 'jokowi',
+            },
+            {
+              name: 'mega',
+            },
+          ],
         },
       ],
     },
@@ -107,8 +159,13 @@ function App() {
     setBoard(remove)
   }
 
-  const onFilter = () => {
-    const filtered = filterCard(board, 'title', 'dedy dantry')
+  const onFilter = (arg) => {
+    const filtered = filterCard(board, 'title', arg)
+    setBoard(filtered)
+  }
+
+  const onFilterDep = (arg) => {
+    const filtered = filterCardDeep(board, 'members', 'name', 'jokowi')
     setBoard(filtered)
   }
 
@@ -143,9 +200,9 @@ function App() {
   return (
     <>
       <div className=''>
-        <button onClick={onAddColumn}>Add Column</button>
-        <button onClick={onFilter}>Filters</button>
-        <button>Add Card</button>
+        <button onClick={onAddColumn}>Add Column</button> |<button onClick={() => onFilter('dedy')}>Filters</button> |
+        <button onClick={() => onFilterDep()}>Filters deep</button> |<button onClick={onFilter}>Filters</button> |
+        <button>Clear filter</button>|<button>Add Card</button>
       </div>
       <Board
         allowAddCard={{ on: 'bottom' }}

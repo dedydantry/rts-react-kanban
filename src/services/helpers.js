@@ -90,11 +90,44 @@ function changeCard(board, cardId, newCard) {
 
 function filterCard(board, keyword, value) {
   const columns = board.columns
+  const stringToSearch = value.toLowerCase()
   columns.map((x) => {
-    x.cards = x.cards.filter((y) => y[keyword] === value)
+    x.cards = x.cards.filter((y) => {
+      const string = y[keyword].toLowerCase()
+      const find = string.search(stringToSearch)
+      if (find >= 0) return y
+    })
     return x
   })
   return { ...board, columns: columns }
 }
 
-export { moveColumn, moveCard, addColumn, removeColumn, changeColumn, addCard, removeCard, changeCard, filterCard }
+function filterCardDeep(board, keyword, obj, value) {
+  const columns = board.columns
+  const stringToSearch = value.toLowerCase()
+  columns.map((x) => {
+    x.cards = x.cards.filter((y) => {
+      const find = y[keyword].filter((z) => {
+        const string = z[obj].toLowerCase()
+        const f = string.search(stringToSearch)
+        if (f >= 0) return z
+      })
+      if (find.length) return y
+    })
+    return x
+  })
+  return { ...board, columns: columns }
+}
+
+export {
+  moveColumn,
+  moveCard,
+  addColumn,
+  removeColumn,
+  changeColumn,
+  addCard,
+  removeCard,
+  changeCard,
+  filterCard,
+  filterCardDeep,
+}
