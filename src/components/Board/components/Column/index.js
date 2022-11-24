@@ -41,11 +41,11 @@ function Column({
             data-testid={`column-${children.id}`}
           >
             <div {...columnProvided.dragHandleProps}>{renderColumnHeader(children)}</div>
-            <DroppableColumn droppableId={String(children.id)}>
+            <DroppableColumn droppableId={String(children.id)} key={children.id}>
               {children.cards.length ? (
                 children.cards.map((card, index) => (
                   <Card
-                    key={card.id}
+                    key={index}
                     index={index}
                     renderCard={(dragging) => renderCard(children, card, dragging)}
                     disableCardDrag={disableCardDrag}

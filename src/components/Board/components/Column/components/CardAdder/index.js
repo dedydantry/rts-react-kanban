@@ -15,7 +15,14 @@ export default function CardAdder({ column, onConfirm }) {
         <CardForm onConfirm={confirmCard} onCancel={() => setAddingCard(false)} />
       ) : (
         <div className='react-kanban-card-adder-row'>
-          <a href='javascript:;' className='react-kanban-card-adder-button' onClick={() => setAddingCard(!addingCard)}>
+          <a
+            href='#'
+            className='react-kanban-card-adder-button'
+            onClick={(e) => {
+              e.preventDefault()
+              setAddingCard(!addingCard)
+            }}
+          >
             + Add new to-do
           </a>
         </div>

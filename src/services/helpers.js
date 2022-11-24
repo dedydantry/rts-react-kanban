@@ -119,6 +119,20 @@ function filterCardDeep(board, keyword, obj, value) {
   return { ...board, columns: columns }
 }
 
+function filterCardDeepObj(board, key, obj, value) {
+  const columns = board.columns
+  const stringToSearch = value.toLowerCase()
+  columns.map((x) => {
+    x.cards = x.cards.filter((y) => {
+      const string = y[key][obj].toLowerCase()
+      const find = string.search(stringToSearch)
+      if (find >= 0) return y
+    })
+    return x
+  })
+  return { ...board, columns: columns }
+}
+
 export {
   moveColumn,
   moveCard,
@@ -130,4 +144,5 @@ export {
   changeCard,
   filterCard,
   filterCardDeep,
+  filterCardDeepObj,
 }

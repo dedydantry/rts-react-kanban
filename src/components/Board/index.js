@@ -63,7 +63,7 @@ function ControlledBoard({
       }}
       {...(renderColumnHeader && { renderColumnHeader: renderColumnHeader })}
       renderCard={(_column, card, dragging) => {
-        if (renderCard) return renderCard(card, { dragging })
+        if (renderCard) return renderCard(_column, card, { dragging })
         return (
           <DefaultCard
             dragging={dragging}
